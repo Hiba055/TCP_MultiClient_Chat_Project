@@ -1,0 +1,21 @@
+@startuml
+node "Server Machine" {
+  artifact "TCPServer.jar / JavaFX runtime" as serverApp
+  component "ServerModel" as serverModel
+  serverApp --> serverModel
+  database "server.properties" as config
+}
+node "Client Machine A" {
+  artifact "TCPClient.jar / JavaFX runtime" as clientA
+  component "ClientModel A" as modelA
+  clientA --> modelA
+}
+node "Client Machine B" {
+  artifact "TCPClient.jar / JavaFX runtime" as clientB
+  component "ClientModel B" as modelB
+  clientB --> modelB
+}
+modelA -- serverModel : TCP/IP : port 3000
+modelB -- serverModel : TCP/IP : port 3000
+config --> serverModel
+@enduml

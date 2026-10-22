@@ -1,0 +1,49 @@
+@startuml
+skinparam classAttributeIconSize 0
+class TCPServer {
+  +main(args: String[]): void
+}
+class ServerView {
+  +start(stage: Stage): void
+  -startServer(): void
+  -stopServer(): void
+}
+class ServerModel {
+  -clients: Set<ClientSession>
+  -running: boolean
+  +start(): void
+  +stop(): void
+  -acceptLoop(): void
+  -broadcastMessage(username, message): void
+}
+class ClientSession {
+  -socket: Socket
+  -username: String
+  -readOnly: boolean
+  +run(): void
+  +send(message): void
+}
+class TCPClient {
+  +main(args: String[]): void
+}
+class ClientView {
+  +start(stage: Stage): void
+  -connect(): void
+  -sendMessage(): void
+  -leave(): void
+}
+class ClientModel {
+  -socket: Socket
+  -connected: boolean
+  +connect(host, port, username): void
+  +sendChat(message): void
+  +requestUsers(): void
+  +disconnect(): void
+}
+TCPServer --> ServerView : launches
+ServerView --> ServerModel : uses
+ServerModel "1" o-- "*" ClientSession : manages
+TCPClient --> ClientView : launches
+ClientView --> ClientModel : uses
+ServerModel ..> ClientModel : TCP protocol
+@enduml
