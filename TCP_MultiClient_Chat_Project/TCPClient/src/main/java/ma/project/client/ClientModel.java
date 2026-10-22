@@ -97,7 +97,7 @@ public final class ClientModel {
         connectionListener.accept(false);
     }
 
-    public boolean isConnected() { return connected; }
+    public boolean isConnected() { return !connected; }
 
     public void shutdown() {
         disconnect();

@@ -180,7 +180,6 @@ public final class ServerModel {
 
     private final class ClientSession implements Runnable {
         private final Socket socket;
-        private BufferedReader in;
         private BufferedWriter out;
         private volatile String username;
         private volatile boolean readOnly;
@@ -192,9 +191,9 @@ public final class ServerModel {
             try (socket;
                  BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                  BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
-                in = reader; out = writer;
+                out = writer;
                 String line;
-                while (running && (line = in.readLine()) != null) handleLine(this, line);
+                while (running && (line = reader.readLine()) != null) handleLine(this, line);
             } catch (IOException ex) {
                 if (running) log("Connection ended: " + ex.getMessage());
             } finally {
